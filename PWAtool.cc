@@ -138,6 +138,16 @@ void PWAtool::set_rho(double param[4])
    // a complete parameterization of rho which simultaneously ensures
    // constraints from positivity and parity conservation, plus the
    // unpolarized beam condition, for arbitrary values of the inputs.
+   //
+   // WARNING: This parameterization has a built-in dualism: two
+   // completely different parameter vectors lead to exactly the same
+   // rho matrix. One of the two choices typically leads to very poor
+   // convergence because the scales of one of the parameters is very
+   // far from the others. The equivalence transformation is as follows.
+   //    a'_1 = c_1 c_3, c'_1 = -2 a_1 c_3, c'_3 = -1 / (2 c_3)
+   // If the scale of the c_3 parameter gets far from the scales of the
+   // a_1 and c_1, switching from one choice to the other can improve
+   // the convergence rate of the fit.
 
    a[0] = param[0];
    c[0] = param[1];
