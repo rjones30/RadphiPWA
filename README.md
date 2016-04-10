@@ -34,7 +34,7 @@ Initial release on April 8, 2016.
 
 ## Dependencies
 
-This package depends on having the gnu c/c++ compiler suite installed, together with the python interpreter, and the ROOT data analysis package from CERN. It was developed and tested with g++ version 4.4.9, python 2.6, and root v5.34.32.
+This package depends on having the gnu c/c++ compiler suite installed, together with the python interpreter, and the ROOT data analysis package from CERN. It was developed and tested with g++ version 4.4.7, python 2.6, and root v5.34.32.
 
 ## Building instructions
 
