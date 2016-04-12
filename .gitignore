@@ -8,3 +8,7 @@
 *.o
 *.so
 *.d
+*_dict.C
+*_dict.h
+*_dict.cxx
+*_dict.cc
