@@ -37,31 +37,34 @@ class PWAtool : public TObject
       double weight;
    };
    typedef struct event_t event_T;
-   struct treerow_t {
+   struct pwa_ntuple_t {
+      Double_t	tabs;
+      Double_t	Ebeam;
+      Double_t	omegaphi;
+      Double_t	gjcosthe;
+      Double_t	gjthe;
+      Double_t	gjphi;
+      Double_t	helcosthe;
+      Double_t	helthe;
+      Double_t	helphi;
+      Double_t	wgt[8];
+      Double_t	Ewgt1[7];
+      Double_t	Ewgt2[7];
+      Double_t	Ewgt3[7];
+      Double_t	Ewgt4[7];
+   };
+   typedef struct pwa_ntuple_t treerow_T;
+   struct pwa_mctuple_t {
       double tabs;
       double Ebeam;
       double omegaphi;
       double gjcosthe;
-      double gjthe;
-      double gjphi;
-      double helcosthe;
-      double helthe;
-      double helphi;
-      double wgt[8];
-      double Ewgt[8];
-   };
-   typedef struct treerow_t treerow_T;
-   struct mctreerow_t {
-      double tabs;
-      double Ebeam;
-      double omegaphi;
-      double gjcosthe;
       double gjphi;
       double helcosthe;
       double helphi;
       double wgt[8];
    };
-   typedef struct mctreerow_t mctreerow_T;
+   typedef struct pwa_mctuple_t mctreerow_T;
 
    double W(const angles_T &Omega);
 
