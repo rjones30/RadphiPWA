@@ -19,6 +19,8 @@ c1 = TCanvas("c1", "c1", 5, 10, 550, 500)
 initial_value = 0.3
 initial_stepsize = 0.1
 
+fitter = 0
+
 def init(check=0, tlim=[0, 99]):
    """
    Load real events and Monte Carlo events from their respective
@@ -94,11 +96,11 @@ def fit7t(maxcalls=300):
    Perform a series of fits over the 7 separate divisions of the data
    according to |t|. The |t| divisions are hard-wired in the code below.
    """
-   tbins = [#[0.0, 0.08], \
-            #[0.08, 0.18], \
-            #[0.18, 0.30], \
-            #[0.30, 0.45], \
-            #[0.45, 0.65], \
+   tbins = [[0.0, 0.08], \
+            [0.08, 0.18], \
+            [0.18, 0.30], \
+            [0.30, 0.45], \
+            [0.45, 0.65], \
             [0.65, 0.90], \
             [0.90, 1.20]]
    for bin in range(0, len(tbins)):
@@ -122,6 +124,23 @@ def report_errors():
    Print a report showing the best-fit parameters for the SDM and
    total acceptance-corrected yield, together with their errors.
    """
+   a1 = Double()
+   c1 = Double()
+   a2 = Double()
+   c3 = Double()
+   a1err = Double()
+   c1err = Double()
+   a2err = Double()
+   c3err = Double()
+   fitter.GetParameter(0, a1, a1err)
+   fitter.GetParameter(1, c1, c1err)
+   fitter.GetParameter(2, a2, a2err)
+   fitter.GetParameter(3, c3, c3err)
+   param = numpy.array([a1, c1, a2, c3])
+   grad = numpy.array([0., 0., 0., 0.])
+   nll_min = Double()
+   npars = Long(4)
+   fitter.Eval(npars, grad, nll_min, param, 4)
    rho11 = tool.get_Re_rho(1,1)
    rho00 = tool.get_Re_rho(0,0)
    rhoM1 = tool.get_Re_rho(-1,1)
@@ -133,7 +152,7 @@ def report_errors():
    rho10 /= normfact
    emat = numpy.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], dtype=numpy.float64)
    fitter.mnemat(emat, 4)
-   covar = TMatrixD(4,4)
+   covar = TMatrixD(4, 4)
    n = 0
    for row in range(0, 4):
       for col in range(0, 4):
