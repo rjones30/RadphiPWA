@@ -20,7 +20,7 @@ c1 = TCanvas("c1", "c1", 5, 10, 550, 500)
 
 Radphi_theta_min = 3.5 # degrees in lab
 Radphi_theta_max = 38  # degrees in lab
-Radphi_energy_min = 0.08 # GeV
+Radphi_energy_min = 0.05 # GeV
 Radphi_thetarec_min = 30 # degrees in lab
 
 def gen_omega(costheta0, phi0, costheta1, phi1):
@@ -133,7 +133,7 @@ def GJframe():
       pgamma[g].RotateY(-theta0)
       pgamma[g].RotateZ(-psi0)
 
-def hist_costhetaGJ(tabs, nevents=10000):
+def hist_costhetaGJ(tabs, limits=(-1,1), nevents=10000):
    """
    Generate a Monte Carlo sample of the reaction phase-space distributed 
    gamma,p -> omega(3gamma),p events at fixed s,t where s is a global
@@ -145,7 +145,7 @@ def hist_costhetaGJ(tabs, nevents=10000):
    h1 = gROOT.FindObject("h1")
    if h1:
       h1.Delete()
-   h1 = TH1I("h1", "costheta_GJ", 100, -1, 1)
+   h1 = TH1I("h1", "costheta_GJ", 100, limits[0], limits[1])
    global h2
    h2 = gROOT.FindObject("h2")
    if h2:
@@ -154,17 +154,23 @@ def hist_costhetaGJ(tabs, nevents=10000):
    for event in range(0, nevents):
       gen_reaction(tabs)
       gbad = 0
+      Eleast = 99
+      for g in range(0, 3):
+         if pgamma[g][3] < Eleast:
+            Eleast = pgamma[g][3]
       for g in range(0, 3):
          theta = pgamma[g].Theta() * 180/math.pi
          if theta < Radphi_theta_min or theta > Radphi_theta_max:
             gbad += 1
-         elif pgamma[g][3] < Radphi_energy_min:
-            gbad += 1
+         #elif theta < (7.95 -(Eleast * 7.69)):
+         #   gbad += 1
          elif precoil.Theta() * 180/math.pi < Radphi_thetarec_min:
             gbad += 1
       if gbad == 0:
          GJframe()
-         h1.Fill(math.cos(pgamma[0].Theta()))
-         h2.Fill(pgamma[0].Phi())
+         costhetaGJ = math.cos(pgamma[0].Theta())
+         if costhetaGJ > limits[0] and costhetaGJ < limits[1]:
+            h1.Fill(costhetaGJ)
+            h2.Fill(pgamma[0].Phi())
    h1.Draw()
    c1.Update()
