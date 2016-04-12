@@ -14,3 +14,6 @@ omega_dict.C: omega.h
 PWAtool_dict.C: PWAtool.h
 	@rm -f PWAtool_dict.*
 	rootcint $@ -c $^
+
+clean:
+	/bin/rm -f *.o *.so *_dict.C *_dict.h *_dict.cxx *_dict.cc *.root
